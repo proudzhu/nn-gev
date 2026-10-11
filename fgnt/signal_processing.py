@@ -20,7 +20,7 @@ def _samples_to_stft_frames(samples, size, shift):
     :return: Number of STFT frames.
     """
 
-    return np.ceil((samples - size + shift) / shift).astype(np.int)
+    return np.ceil((samples - size + shift) / shift).astype(int)
 
 
 def _stft_frames_to_samples(frames, size, shift):
@@ -101,7 +101,7 @@ def audioread(path, offset=0.0, duration=None, sample_rate=16000):
 
 
 def stft(time_signal, time_dim=None, size=1024, shift=256,
-         window=signal.blackman, fading=True, window_length=None):
+         window=signal.windows.blackman, fading=True, window_length=None):
     """
     Calculates the short time Fourier transformation of a multi channel multi
     speaker time signal. It is able to add additional zeros for fade-in and
@@ -155,7 +155,7 @@ def stft(time_signal, time_dim=None, size=1024, shift=256,
 
 
 def istft(stft_signal, size=1024, shift=256,
-          window=signal.blackman, fading=True, window_length=None):
+          window=signal.windows.blackman, fading=True, window_length=None):
     """
     Calculated the inverse short time Fourier transform to exactly reconstruct
     the time signal.
@@ -185,7 +185,7 @@ def istft(stft_signal, size=1024, shift=256,
     # Why? Line created by Hai, Lukas does not know, why it exists.
     window *= size
 
-    time_signal = scipy.zeros(stft_signal.shape[0] * shift + size - shift)
+    time_signal = np.zeros(stft_signal.shape[0] * shift + size - shift)
 
     for j, i in enumerate(range(0, len(time_signal) - size + shift, shift)):
         time_signal[i:i + size] += window * np.real(irfft(stft_signal[j]))
@@ -220,7 +220,7 @@ def audiowrite(data, path, samplerate=16000, normalize=False, threaded=True):
 
     if normalize:
         if not data.dtype.kind == 'f':
-            data = data.astype(np.float)
+            data = data.astype(np.float64)
         data /= np.max(np.abs(data))
 
     if data.dtype.kind == 'f':

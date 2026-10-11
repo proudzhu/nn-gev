@@ -97,7 +97,7 @@ def get_gev_vector(target_psd_matrix, noise_psd_matrix):
     :return: Set of beamforming vectors with shape (bins, sensors)
     """
     bins, sensors, _ = target_psd_matrix.shape
-    beamforming_vector = np.empty((bins, sensors), dtype=np.complex)
+    beamforming_vector = np.empty((bins, sensors), dtype=complex)
     for f in range(bins):
         try:
             eigenvals, eigenvecs = eigh(target_psd_matrix[f, :, :],

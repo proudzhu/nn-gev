@@ -1,0 +1,39 @@
+[project]
+name = "nn-gev"
+version = "0.1.0"
+description = "Neural network based GEV beamformer (NN-GEV) with DeepFilterNet3 mask estimation"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    # chainer 7.8.1 constraints: numpy<2.0.0, setuptools<74.0.0
+    "chainer==7.8.1",
+    "numpy>=1.24,<2.0.0",
+    "scipy>=1.10",
+    "scikit-learn>=1.3",
+    "librosa>=0.10",
+    "tqdm>=4.60",
+    "soundfile>=0.12",
+    # DeepFilterNet3 enhancement + mask estimation (deepfilter_pcm.py)
+    "deepfilternet==0.5.6",
+    "torch>=2.0",
+    "torchaudio>=2.0",
+]
+
+[tool.uv]
+# chainer 7.8.1 (2019, unmaintained) needs legacy setuptools to build from sdist
+constraint-dependencies = ["setuptools<74.0.0"]
+no-build-isolation-package = ["chainer"]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]
+torchaudio = [{ index = "pytorch-cpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[dependency-groups]
+dev = [
+    "setuptools>=69.5.1,<74.0.0",
+]

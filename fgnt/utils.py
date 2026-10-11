@@ -91,8 +91,9 @@ def segment_axis(a, length, overlap=0, axis=None, end='cut', endvalue=0):
 
     if not a.flags.contiguous:
         a = a.copy()
+        s = a.strides[axis]
         newstrides = a.strides[:axis] + ((length - overlap) * s, s) + a.strides[
-                                                                      axis + 1:]
+                                                                  axis + 1:]
         return np.ndarray.__new__(np.ndarray, strides=newstrides,
                                   shape=newshape, buffer=a, dtype=a.dtype)
 
